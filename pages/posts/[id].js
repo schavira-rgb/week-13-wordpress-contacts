@@ -35,7 +35,7 @@ export default function Post({ postData }) { // Define and export Post component
   } // End component function
 
 export async function getStaticPaths() { // Define and export getStaticPaths function
-  const paths = getAllPostIds(); // Get all post IDs
+  const paths = await getAllPostIds(); // Get all post IDs
   return { // Return paths object
     paths, // Set paths array
     fallback: false, // Set fallback to false
