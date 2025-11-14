@@ -1,13 +1,13 @@
-import Link from 'next/link'; // Import Link component for navigation
-import Date from '../components/date'; // Import Date component
-import { getSortedPostsData } from '../lib/posts'; // Import getSortedPostsData function from lib/posts.js
-import Head from 'next/head'; // Import Head component for metadata
-import Layout, { siteTitle } from '../components/layout'; // Import Layout component and siteTitle
-import utilStyles from '../styles/utils.module.css'; // Import utility CSS styles
-import customStyles from '../styles/CustomHome.module.css'; // Import custom home styles
+import Link from 'next/link';
+import Date from '../components/date';
+import { getSortedPostsData } from '../lib/posts';
+import Head from 'next/head';
+import Layout, { siteTitle } from '../components/layout';
+import utilStyles from '../styles/utils.module.css';
+import customStyles from '../styles/CustomHome.module.css';
 
-export default function Home({ allPostsData }) { // Define and export Home component function with allPostsData
-  return ( // Return JSX content
+export default function Home({ allPostsData }) {
+  return (
     <Layout>
       <Head>
         <title>{siteTitle}</title>
@@ -26,8 +26,8 @@ export default function Home({ allPostsData }) { // Define and export Home compo
           </div>
           <h1 className={customStyles.heroTitle}>Estevan Chavira</h1>
           <p className={customStyles.heroSubtitle}>Cybersecurity Student & Web Developer</p>
-          <a href="#blog" className={customStyles.blogLink}>
-            Read My Blog
+          <a href="#contacts" className={customStyles.blogLink}>
+            View Contact Directory
           </a>
         </section>
 
@@ -103,32 +103,52 @@ export default function Home({ allPostsData }) { // Define and export Home compo
           </div>
         </section>
 
-        <section className={customStyles.section} id="blog">
-          <h2 className={customStyles.sectionTitle}>Blog</h2> 
-          <ul>
-            {allPostsData.map(({ id, date, title }) => ( // Map through allPostsData array to display each post
-              <li className={utilStyles.listItem} key={id}>
-                <Link href={`/posts/${id}`}>{title}</Link>
-                <br />
-                <small className={utilStyles.lightText}>
-                  <Date dateString={date} />
-                </small>
-              </li>
-            ))}
-          </ul>
-          </section>
+        {/* NEW CONTACTS SECTION - Week 13 Assignment */}
+        <section className={customStyles.section} id="contacts">
+          <h2 className={customStyles.sectionTitle}>Contact Directory</h2>
+          <p style={{marginBottom: '1rem', color: '#666'}}>
+            Week 13 Assignment: WordPress Custom Post Types with SQL Queries
+          </p>
+          <div className="contact-list">
+            <ul style={{listStyle: 'none', padding: 0}}>
+              {allPostsData.map(({ id, name, first_name, last_name, company }) => (
+                <li key={id} style={{
+                  padding: '1rem',
+                  marginBottom: '0.5rem',
+                  background: '#f5f5f5',
+                  borderRadius: '8px',
+                  transition: 'background 0.2s'
+                }}>
+                  <Link href={`/${id}`} style={{
+                    textDecoration: 'none',
+                    color: '#0070f3',
+                    display: 'block'
+                  }}>
+                    <strong style={{fontSize: '1.1rem'}}>
+                      {first_name} {last_name}
+                    </strong>
+                    {company && (
+                      <span style={{color: '#666', fontSize: '0.9rem', marginLeft: '0.5rem'}}>
+                        - {company}
+                      </span>
+                    )}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
 
       </div>
     </Layout>
-  ); // End return statement
-} // End component function
+  );
+}
 
-// Export getStaticProps function to get static props
-export async function getStaticProps() { // Define and export getStaticProps function
-  const allPostsData = await getSortedPostsData(); // Get all posts data
-  return { // Return props
+export async function getStaticProps() {
+  const allPostsData = await getSortedPostsData();
+  return {
     props: {
-      allPostsData, // Return all posts data
+      allPostsData,
     },
-  }; // Return props
-} // End getStaticProps function
+  };
+}
